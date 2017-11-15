@@ -4,7 +4,7 @@ package technology.josealmaraz.mvplogic.access;
  * Created by Usuario on 14/11/2017.
  */
 
-public interface LoginActivityContract {
+public interface AccessActivityContract {
     interface View {
         String getNombres();
         String getApellidos();
@@ -19,7 +19,7 @@ public interface LoginActivityContract {
 
     interface Presenter {
 
-        void setView(LoginActivityContract.View view);
+        void setView(AccessActivityContract.View view);
         void botonAccesoPresionado();
         void obtieneUsuario();
 
@@ -28,6 +28,6 @@ public interface LoginActivityContract {
     interface Model {
 
         void createUser(String nombres, String apellidos);
-        User getUser();
+        Usuario getUser();
     }
 }

@@ -4,13 +4,13 @@ package technology.josealmaraz.mvplogic.access;
  * Created by Usuario on 14/11/2017.
  */
 
-public class User {
+public class Usuario {
 
     private int id;
     private String apellidos;
     private String nombres;
 
-    public User(String apellidos, String nombres) {
+    public Usuario(String apellidos, String nombres) {
         this.apellidos = apellidos;
         this.nombres = nombres;
     }
