@@ -35,6 +35,7 @@ public class AccessPresenter implements AccessActivityContract.Presenter {
 
     @Override
     public void obtieneUsuario() {
+        /*
         Usuario user = model.getUser();
         if(user == null){
             if(view != null){
@@ -45,6 +46,15 @@ public class AccessPresenter implements AccessActivityContract.Presenter {
                 view.setNombres(user.getNombres());
                 view.setApellidos(user.getApellidos());
             }
+        }*/
+        Usuario user = model.getUser();
+
+        if(user != null){
+            if(view != null){
+                view.setApellidos(user.getApellidos());
+                view.setNombres(user.getNombres());
+            }
         }
+
     }
 }
