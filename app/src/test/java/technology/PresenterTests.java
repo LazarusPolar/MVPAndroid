@@ -77,8 +77,8 @@ public class PresenterTests {
     // TODO: ARREGLAR METODO DE PRUEBA
     @Test
     public void creaMensajesDeErrorSiLosCamposSonVacios() {
-        when(mockView.getNombres()).thenReturn(""); //Vacio
-        presenter.botonAccesoPresionado();
+        when(mockView.getNombres()).thenReturn(""); // Vacio
+        presenter.saveUser();
 
         verify(mockView, times(1)).getNombres();
         verify(mockView, never()).getApellidos();
@@ -88,10 +88,29 @@ public class PresenterTests {
         when(mockView.getNombres()).thenReturn("Daniel");
         when(mockView.getApellidos()).thenReturn("");
 
-        presenter.botonAccesoPresionado();
+        presenter.saveUser();
 
-        verify(mockView, times(2)).getApellidos(); //Llamado dos veces. Una antes y una ahora.
-        verify(mockView, times(1)).getNombres(); // Solo llamado esta unica vez
+        verify(mockView, times(1)).getApellidos(); //Llamado dos veces. Una antes y una ahora.
+        verify(mockView, times(2)).getNombres(); // Solo llamado esta unica vez
         verify(mockView, times(2)).muestraErrorEntrada(); // Llamado dos veces. Una anterior y esta.
+
+    }
+
+    @Test
+    public void debeGuardarUsuarioValido(){
+        when(mockView.getApellidos()).thenReturn("Daniel");
+        when(mockView.getNombres()).thenReturn("Alducin");
+
+        presenter.saveUser();
+
+        //Se llama dos veces y cuenta las de la invocacion del when
+        verify(mockView, times(2)).getNombres();
+        verify(mockView, times(2)).getApellidos();
+
+        //Se asegura que el repositorio lo ha almancenado correctamente
+        verify(mockLoginModel, times(1)).createUser("Alducin", "Daniel");
+
+        //Se asegura de que la vista muestre mensaje
+        verify(mockView, times(1)).muestraGuardado();
     }
 }

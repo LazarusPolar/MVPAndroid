@@ -60,4 +60,16 @@ public class AccessPresenter implements AccessActivityContract.Presenter {
 
     }
 
+    @Override
+    public void saveUser() {
+        if (view != null){
+            if (view.getNombres().trim().equals("") || view.getApellidos().trim().equals("")){
+                view.muestraErrorEntrada();
+            } else {
+                model.createUser(view.getNombres(), view.getApellidos());
+                view.muestraGuardado();
+            }
+        }
+    }
+
 }
