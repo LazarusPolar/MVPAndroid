@@ -22,7 +22,6 @@ public interface AccessActivityContract {
         void setView(AccessActivityContract.View view);
         void botonAccesoPresionado();
         void obtieneUsuario();
-
     }
 
     interface Model {

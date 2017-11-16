@@ -8,6 +8,10 @@ import technology.josealmaraz.mvplogic.access.AccessPresenter;
 import technology.josealmaraz.mvplogic.access.Usuario;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockingDetails;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -24,16 +28,70 @@ public class PresenterTests {
     @Before
     public void setup(){
         mockLoginModel = mock(AccessActivityContract.Model.class);
-        user = new Usuario("Fox", "Mulder");
+        user = new Usuario("Almaraz", "Jose");
         //when(mockLoginModel.getUser()).thenReturn(user);
         mockView = mock(AccessActivityContract.View.class);
         presenter = new AccessPresenter(mockLoginModel);
         presenter.setView(mockView);
     }
 
+
+    //Pasa cuando no se encuentra la condicion "else" en obtenerUsuario()
+    /*
     @Test
     public void sinInteraccionDeVista(){
         presenter.obtieneUsuario();
         verifyZeroInteractions(mockView);
+    }*/
+
+    @Test
+    public void cargaUsuarioDelRepositorioCuandoUsuarioValido() {
+        when(mockLoginModel.getUser()).thenReturn(user);
+
+        presenter.obtieneUsuario();
+
+        //Verifica interacciones del modelo
+        verify(mockLoginModel, times(1)).getUser();
+
+        //Verifica interacciones de la vista
+        verify(mockView, times(1)).setNombres("Jose");
+        verify(mockView, times(1)).setApellidos("Almaraz");
+        verify(mockView, never()).muestraNoDisponible();
+    }
+
+    @Test
+    public void muestraErrorCuandoUsuarioEsNull(){
+        when(mockLoginModel.getUser()).thenReturn(null);
+
+        presenter.obtieneUsuario();
+
+        //Verifica interacciones del mdelo
+        verify(mockLoginModel, times(1)).getUser();
+
+        //Verifica interacciones de vista
+        verify(mockView, never()).setApellidos("Almaraz");
+        verify(mockView, never()).setNombres("Jose");
+        verify(mockView, times(1)).muestraNoDisponible();
+    }
+
+    // TODO: ARREGLAR METODO DE PRUEBA
+    @Test
+    public void creaMensajesDeErrorSiLosCamposSonVacios() {
+        when(mockView.getNombres()).thenReturn(""); //Vacio
+        presenter.botonAccesoPresionado();
+
+        verify(mockView, times(1)).getNombres();
+        verify(mockView, never()).getApellidos();
+        verify(mockView, times(1)).muestraErrorEntrada();
+
+        //Regresa el valor de uno vacio y otro normal
+        when(mockView.getNombres()).thenReturn("Daniel");
+        when(mockView.getApellidos()).thenReturn("");
+
+        presenter.botonAccesoPresionado();
+
+        verify(mockView, times(2)).getApellidos(); //Llamado dos veces. Una antes y una ahora.
+        verify(mockView, times(1)).getNombres(); // Solo llamado esta unica vez
+        verify(mockView, times(2)).muestraErrorEntrada(); // Llamado dos veces. Una anterior y esta.
     }
 }

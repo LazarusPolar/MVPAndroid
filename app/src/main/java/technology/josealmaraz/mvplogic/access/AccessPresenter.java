@@ -54,7 +54,10 @@ public class AccessPresenter implements AccessActivityContract.Presenter {
                 view.setApellidos(user.getApellidos());
                 view.setNombres(user.getNombres());
             }
+        } else {
+            view.muestraNoDisponible();
         }
 
     }
+
 }
